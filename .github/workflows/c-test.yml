@@ -22,7 +22,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y gcc
 
     - name: Compile C Program
-      run: gcc -o my_program test.c
+      run: gcc -o Build/my_program test.c
 
     - name: Run Executable
       run: ./my_program
@@ -32,5 +32,5 @@ jobs:
         # Artifact name
         name: Build-Artifact
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{github.workspace}}
+        path: ${{github.workspace}}/Build
         # The desired behavior if no files are found using the provided path.
