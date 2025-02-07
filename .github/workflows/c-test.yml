@@ -27,8 +27,8 @@ jobs:
     - name: Compile C Program
       run: gcc -o Build/my_program test.c
 
-    # - name: Echo Build Path
-    #   run: echo "Build path is: ${{github.workspace}}/Build"
+    - name: Echo Build Path
+      run: echo "Build path is ${{github.workspace}}/Build"
 
     - name: Run Executable
       run: ./Build/my_program
