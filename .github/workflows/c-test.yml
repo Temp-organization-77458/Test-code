@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y gcc
 
     - name: Compile C Program
-      run: gcc -o my_program main.c
+      run: gcc -o my_program test.c
 
     - name: Run Executable
       run: ./my_program
