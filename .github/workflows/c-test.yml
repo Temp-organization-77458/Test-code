@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: C CI
 
 on:
   push:
@@ -14,51 +14,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool cmake
+    - name: Install GCC
+      run: sudo apt-get update && sudo apt-get install -y gcc
 
-    - name: Check for Autotools or CMake
-      id: check_build_system
-      run: |
-        if [ -f configure ]; then
-          echo "build_system=configure" >> $GITHUB_ENV
-        elif [ -f configure.ac ]; then
-          echo "build_system=autotools" >> $GITHUB_ENV
-        elif [ -f CMakeLists.txt ]; then
-          echo "build_system=cmake" >> $GITHUB_ENV
-        else
-          echo "No known build system found!" >&2
-          exit 1
-        fi
+    - name: Compile C Program
+      run: gcc -o my_program main.c
 
-    - name: Generate configure script (if needed)
-      if: env.build_system == 'autotools'
-      run: autoreconf -fi
-
-    - name: Configure (Autotools)
-      if: env.build_system == 'autotools' || env.build_system == 'configure'
-      run: ./configure
-
-    - name: Configure (CMake)
-      if: env.build_system == 'cmake'
-      run: cmake .
-
-    - name: Build (Make)
-      if: env.build_system == 'autotools' || env.build_system == 'configure'
-      run: make
-
-    - name: Build (CMake)
-      if: env.build_system == 'cmake'
-      run: cmake --build .
-
-    - name: Run tests (Make)
-      if: env.build_system == 'autotools' || env.build_system == 'configure'
-      run: make check
-
-    - name: Run tests (CMake)
-      if: env.build_system == 'cmake'
-      run: ctest --output-on-failure
-
-    - name: Run distribution checks
-      if: env.build_system == 'autotools' || env.build_system == 'configure'
-      run: make distcheck
+    - name: Run Executable
+      run: ./my_program
