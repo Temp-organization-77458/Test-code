@@ -38,3 +38,44 @@ jobs:
       with:
         name: Build-Artifact
         path: ${{github.workspace}}/Build
+        
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install GCC
+      run: sudo apt-get update && sudo apt-get install -y gcc
+
+    - name: Create Build Directory
+      run: mkdir -p Test
+
+    - name: Compile C Program
+      run: gcc -o Test/my_program test.c
+
+    - name: Echo Build Path
+      run: echo "Build path is ${{github.workspace}}/Test"
+
+    - name: Run Executable
+      run: ./Test/my_program
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.0
+      with:
+        name: Build-Artifact
+        path: ${{github.workspace}}/Test
+        
+  Deploy:
+  
+    runs-on: ubuntu-latest
+    needs: test
+    environment: 
+      name: Staging
+
+    steps:
+      - name: Run Deply
+        run: echo deploying
