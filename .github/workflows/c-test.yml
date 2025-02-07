@@ -21,16 +21,20 @@ jobs:
     - name: Install GCC
       run: sudo apt-get update && sudo apt-get install -y gcc
 
+    - name: Create Build Directory
+      run: mkdir -p Build
+
     - name: Compile C Program
       run: gcc -o Build/my_program test.c
 
+    # - name: Echo Build Path
+    #   run: echo "Build path is: ${{github.workspace}}/Build"
+
     - name: Run Executable
-      run: ./my_program
+      run: ./Build/my_program
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.0
       with:
-        # Artifact name
         name: Build-Artifact
-        # A file, directory or wildcard pattern that describes what to upload
         path: ${{github.workspace}}/Build
-        # The desired behavior if no files are found using the provided path.
